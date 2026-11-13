@@ -57,9 +57,17 @@ public class PostControllerTest {
                 {"id": %d, "userId": %d, "title": "%s", "body": "%s", "version": null}
                 """.formatted(post.id(), post.userId(), post.title(), post.body());
         when(postRepository.findById(1)).thenReturn(Optional.of(posts.getFirst()));
+        System.out.println("JSON GENERADO: " + jsonResponse);
         mockMvc.perform(get("/api/posts/1"))
                 .andExpect(status().isOk());
 
+    }
+
+    @Test
+    void shouldNotFindPostWhenGivenInvalidID() throws Exception {
+        when(postRepository.findById(999)).thenThrow(PostNotFoundException.class);
+        mockMvc.perform(get("/api/posts/999"))
+                .andExpect(status().isNotFound());
     }
 
 }
