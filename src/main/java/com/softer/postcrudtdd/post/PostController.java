@@ -28,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping
-
+    @ResponseStatus(HttpStatus.CREATED)
     Post create(@RequestBody Post post){
         return postRepository.save(post);
     }
