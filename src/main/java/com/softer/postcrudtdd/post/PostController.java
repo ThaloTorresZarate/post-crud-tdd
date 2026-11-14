@@ -50,5 +50,9 @@ public class PostController {
                 throw new PostNotFoundException();
             }
         }
+    @DeleteMapping("/{id}")
 
+    void delete(@PathVariable Integer id){
+        postRepository.deleteById(id);
+    }
 }
