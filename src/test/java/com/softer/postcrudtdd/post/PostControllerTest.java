@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -94,4 +93,16 @@ public class PostControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldUpdatePostWhenGivenValidPostData() throws Exception {
+        Post updated = new Post(1,1,"Updated Title", "Updated Body", 1);
+        when(postRepository.findById(1)).thenReturn((Optional.of(updated)));
+        when(postRepository.save(updated)).thenReturn(updated);
+        var jsonResponse = """
+                {"id": %d, "userId": %d, "title": "%s", "body": "%s", "version": null}
+                """.formatted(updated.id(), updated.userId(), updated.title(), updated.body());
+        mockMvc.perform(put("/api/post/1")
+                .contentType("application/json")
+                .content(jsonResponse)).andExpect((status().isOk()));
+    }
 }
