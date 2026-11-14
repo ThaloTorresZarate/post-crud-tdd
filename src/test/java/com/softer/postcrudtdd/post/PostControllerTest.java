@@ -101,7 +101,7 @@ public class PostControllerTest {
         var jsonResponse = """
                 {"id": %d, "userId": %d, "title": "%s", "body": "%s", "version": null}
                 """.formatted(updated.id(), updated.userId(), updated.title(), updated.body());
-        mockMvc.perform(put("/api/post/1")
+        mockMvc.perform(put("/api/posts/1")
                 .contentType("application/json")
                 .content(jsonResponse)).andExpect((status().isOk()));
     }
